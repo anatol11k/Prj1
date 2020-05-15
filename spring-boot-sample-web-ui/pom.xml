@@ -8,7 +8,7 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <artifactId>spring-boot-sample-web-ui.${BUILD_NUMBER}</artifactId>
+    <artifactId>spring-boot-sample-web-ui</artifactId>
 	<name>Spring Boot Web UI Sample</name>
 	<description>Spring Boot Web UI Sample</description>
 	<properties>
@@ -42,5 +42,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>${project.artifactId}.${BUILD_NUMBER}</finalName>
 	</build>
 </project>
