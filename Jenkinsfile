@@ -1,11 +1,5 @@
 node{
-  stage('GIT Checkout'){
-    
-    printColored('stage', 'Cleaning')
-        sh 'uptime'
-        printColored('stage', 'Checkout')
-        printColored('step', 'Checkout a ' + branchName + ' branch')
-    
+  stage('GIT Checkout'){ 
     checkout([
              $class: 								'GitSCM', 
              branches:  							[[name: '*/master']],
