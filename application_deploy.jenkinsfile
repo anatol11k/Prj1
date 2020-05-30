@@ -22,11 +22,11 @@ node{
      sh 'cp /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui/target/*.jar /opt/ansible/roles/deploy/files/ && rm -rf /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui'
                    }
       stage('Run Asnible'){
-      ansiblePlaybook
+      ansiblePlaybook(
       become: true,
       colorized: true,
       disableHostKeyChecking: true,
       extras: 'var1=web_ui.$JN.jar port=15000',
-      playbook: '/opt/ansible/prv.yml'
+      playbook: '/opt/ansible/prv.yml')
                           }
 }
