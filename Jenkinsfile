@@ -24,7 +24,14 @@ node{
   stage('Build Package'){
     sh 'cd spring-boot-sample-web-ui/ && mvn clean install '
                                                                                                                           }
-  
-  }
+   stage(Upload Artifact){
+       archiveArtifacts(
+         artifacts: 'spring-boot-sample-web-ui/target/*.jar', 
+         followSymlinks: false,
+         fingerprint: true
+           )
+                                                                                                                           }
+
+}
   
   
