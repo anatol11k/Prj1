@@ -1,0 +1,22 @@
+properties([
+    [
+            $class  : 'BuildDiscarderProperty',
+            strategy: [$class               : 'LogRotator',
+                       artifactDaysToKeepStr: '14',
+                       artifactNumToKeepStr : '5',
+                       daysToKeepStr        : '',
+                       numToKeepStr         : '10'
+                       ]
+    ], disableConcurrentBuilds()
+    ])
+
+node{
+
+     stage('Deploy'){
+       copyArtifacts(
+       fingerprintArtifacts: true,
+       projectName: 'GWP',
+       selector: lastSuccessful(),
+       target: '/opt/ansible/roles/deploy/files/')
+                                                                                                                                 }
+     }
