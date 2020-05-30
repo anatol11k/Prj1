@@ -19,6 +19,6 @@ node{
        selector: lastWithArtifacts(),
        target: '/opt/ansible/roles/deploy/files/')
        
-     sh 'cp /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui/target/*.jar /opt/ansible/roles/deploy/files/'
+     sh 'cp /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui/target/*.jar /opt/ansible/roles/deploy/files/ && rm -rf /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui'
                                                                                                                                  }
      }
