@@ -35,7 +35,7 @@ node{
        parameters:
        [string(
        name: 'JV',
-       value: '{BUILD_NUMBER}')]
+       value: '${BUILD_NUMBER}')]
            )
                                                                                                                            }
 
