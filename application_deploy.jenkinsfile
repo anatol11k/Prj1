@@ -18,5 +18,7 @@ node{
        projectName: 'GWP',
        selector: lastWithArtifacts(),
        target: '/opt/ansible/roles/deploy/files/')
+       
+     sh 'mv /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui/target/*.jar ../../ && rm -rf /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui'
                                                                                                                                  }
      }
