@@ -30,6 +30,13 @@ node{
          followSymlinks: false,
          fingerprint: true
            )
+       build( 
+       job: 'Deploy_GWP',
+       parameters:
+       [string(
+       name: 'JV',
+       value: '{BUILD_NUMBER}')]
+           )
                                                                                                                            }
 
 }
