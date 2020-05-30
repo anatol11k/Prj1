@@ -16,7 +16,7 @@ node{
        copyArtifacts(
        fingerprintArtifacts: true,
        projectName: 'GWP',
-       selector: lastSuccessful(),
+       selector: lastWithArtifacts(),
        target: '/opt/ansible/roles/deploy/files/')
                                                                                                                                  }
      }
