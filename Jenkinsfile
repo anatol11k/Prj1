@@ -1,3 +1,15 @@
+properties([
+    [
+            $class  : 'BuildDiscarderProperty',
+            strategy: [$class               : 'LogRotator',
+                       artifactDaysToKeepStr: '14',
+                       artifactNumToKeepStr : '5',
+                       daysToKeepStr        : '',
+                       numToKeepStr         : '10'
+                       ]
+    ], disableConcurrentBuilds()
+    ])
+
 node{
   stage('GIT Checkout'){ 
     checkout([
