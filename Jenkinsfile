@@ -11,6 +11,13 @@ properties([
     ])
 
 node{
+    
+     stage("Clean"){
+        sh "uptime"
+        deleteDir()
+                    }
+    
+    
   stage('GIT Checkout'){ 
     checkout([
              $class: 								'GitSCM', 
