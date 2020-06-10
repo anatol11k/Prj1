@@ -12,6 +12,11 @@ properties([
 
 node{
 
+     stage("Clean"){
+        sh "uptime"
+        deleteDir()
+                    }     
+     
      stage('Deploy'){
        copyArtifacts(
        fingerprintArtifacts: true,
