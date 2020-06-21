@@ -27,6 +27,7 @@ node{
                              }
       stage('Run Asnible'){
       ansiblePlaybook(
+      inventory: '/opt/ansible/ec.py'
       become: true,
       colorized: true,
       disableHostKeyChecking: true,
