@@ -21,7 +21,7 @@ node{
        copyArtifacts(
        filter: '*.jar'
        fingerprintArtifacts: true,
-       projectName: 'GWP',
+       projectName: 'GW_build',
        selector: upstream(),
        target: '/opt/ansible/roles/deploy/files/')
        
