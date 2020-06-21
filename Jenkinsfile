@@ -25,7 +25,7 @@ node{
              doGenerateSubmoduleConfigurations: 	false,
              extensions: 							[],
              submoduleCfg:							[],
-             userRemoteConfigs:						[[credentialsId: 'jenkins-ssh', url: 'git@github.com:anatol11k/Prj1.git']]])
+             userRemoteConfigs:						[[credentialsId: 'Jenkins_git', url: 'git@github.com:anatol11k/Prj1.git']]])
                                                                                                                           }
     
   stage('Build Package'){
