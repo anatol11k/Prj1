@@ -16,7 +16,7 @@ node{
         sh "uptime"
         deleteDir()
                     }     
-     
+    
      stage('Deploy'){
        copyArtifacts(
        filter: '*.jar',
@@ -24,8 +24,7 @@ node{
        projectName: 'GW_Build',
        selector: upstream(),
        target: '/opt/ansible/roles/deploy/files/'
-       
-                      }
+                             }
       stage('Run Asnible'){
       ansiblePlaybook(
       become: true,
