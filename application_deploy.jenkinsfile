@@ -19,15 +19,13 @@ node{
      
      stage('Deploy'){
        copyArtifacts(
-       filter: '*.jar'
-       fingerprintArtifacts: true
+       filter: '*.jar',
+       fingerprintArtifacts: true,
        projectName: 'GW_Build',
        selector: upstream(),
-       target: '/opt/ansible/roles/deploy/files/')
+       target: '/opt/ansible/roles/deploy/files/'
        
-     //sh 'cp /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui/target/*.jar /opt/ansible/roles/deploy/files/'
-     //sh 'cp /opt/ansible/roles/deploy/files/web_ui.$JV.jar /opt/ansible/roles/docker_test/files && rm -rf /opt/ansible/roles/deploy/files/spring-boot-sample-web-ui' 
-                   }
+                      }
       stage('Run Asnible'){
       ansiblePlaybook(
       become: true,
