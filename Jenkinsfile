@@ -38,7 +38,7 @@ node{
          fingerprint: true
            )
        build( 
-       job: 'Deploy_GWP',
+       job: 'GW_Deploy',
        parameters:
        [string(
        name: 'JV',
