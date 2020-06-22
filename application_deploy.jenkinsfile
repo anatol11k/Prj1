@@ -28,6 +28,7 @@ node{
                     
      stage('Run Asnible for launch ec2 Incstances'){
       ansiblePlaybook(
+      vaultCredentialsId: 'Ansible_vault_pass',
       inventory: '/opt/ansible/hosts',
       become: true,
       colorized: true,
