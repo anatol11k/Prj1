@@ -24,8 +24,19 @@ node{
        projectName: 'GW_Build',
        selector: upstream(),
        target: '/opt/ansible/roles/deploy/files/')
-                             }
-      stage('Run Asnible'){
+                    }
+                    
+     stage('Run Asnible for launch ec2 Incstances'){
+      ansiblePlaybook(
+      inventory: '/opt/ansible/hosts',
+      become: true,
+      colorized: true,
+      disableHostKeyChecking: true,
+      playbook: '/opt/ansible/aws_init.yml')
+                          }           
+                    
+                    
+      stage('Run Asnible for provisioning and deploy'){
       ansiblePlaybook(
       inventory: '/opt/ansible/ec2.py',
       become: true,
