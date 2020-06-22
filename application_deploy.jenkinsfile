@@ -43,7 +43,7 @@ node{
       become: true,
       colorized: true,
       disableHostKeyChecking: true,
-      extras: ' -e "var1=web_ui.$JV.jar port=15000"',
+      extras: ' -e "var1=web-ui.$JV.jar port=15000"',
       playbook: '/opt/ansible/main.yml')
                           }
 }
