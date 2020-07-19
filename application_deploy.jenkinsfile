@@ -33,7 +33,7 @@ node{
              
     stage('bla'){
     sh "cd opt/ansible/ec2.py && ./ec2.py --list"
-        
+        }
                     
    stage('Run Asnible for provisioning and deploy'){
      ansiblePlaybook(
