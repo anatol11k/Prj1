@@ -31,18 +31,9 @@ node{
      }         
                     
              
-    stage('bla'){
-    sh "cd /opt/ansible/ && ./ec2.py --list"
-        }
-                    
+                     
    stage('Run Asnible for provisioning and deploy'){
-     ansiblePlaybook(
-      inventory: '/opt/ansible/ec2.py',
-      become: true,
-      colorized: true,
-      disableHostKeyChecking: true,
-      extras: ' -e "var1=web-ui.$JV.jar port=15000"',
-      playbook: '/opt/ansible/main.yml')
+     sh "ansible-playbook /opt/ansible/main.yml -i /opt/ansible/ec2.py -b --become-user root -e 'var1=web-ui.30.jar port=15000'"
            }
                           
  
