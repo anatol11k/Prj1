@@ -17,15 +17,18 @@ node{
         deleteDir()
                     }     
     
-     stage('Deploy'){
+     stage('Copy Artifact'){
        copyArtifacts(
        filter: '*.jar',
        fingerprintArtifacts: true,
        projectName: 'GW_Build',
        selector: upstream(),
        target: '/opt/ansible/roles/deploy/files/')
-       sh "cp /opt/ansible/roles/deploy/files/web-ui.$JV.jar /opt/ansible/roles/docker/files"
-                    }
+}
+
+     stage('Prepare ansible for docker'){
+        sh "cp /opt/ansible/roles/deploy/files/web-ui.$JV.jar /opt/ansible/roles/docker/files"
+     }         
                     
      stage('Run Asnible for launch ec2 Incstances'){
       ansiblePlaybook(
