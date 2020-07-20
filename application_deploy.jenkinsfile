@@ -2,7 +2,7 @@ properties([
     [
             $class  : 'BuildDiscarderProperty',
             strategy: [$class               : 'LogRotator',
-                       artifactDaysToKeepStr: '14',
+                       artifactDaysToKeepStr: '13',
                        artifactNumToKeepStr : '5',
                        daysToKeepStr        : '',
                        numToKeepStr         : '10'
