@@ -28,13 +28,12 @@ node{
 
      stage('Input for port'){
       def userInput = input(
-                            id: 'userInput', message: 'Enter path of test reports:?',
+                            id: 'userInput', message: 'Port for application to run',
                             parameters: [
 
-                                    string(defaultValue: 'None',
+                                    string(defaultValue: '8000',
                                             description: 'Port for application to run',
                                             name: 'Port')])
-      inputPort = userInput.Port?:''
                        }
                        
      stage('Prepare ansible for docker'){
