@@ -28,12 +28,11 @@ node{
 
      stage('Input for port'){
       def userInput = input(
-                            id: 'userInput', message: 'Port for application to run',
-                            parameters: [
-
-                                    string(defaultValue: '8000',
-                                            description: 'Port for application to run',
-                                            name: 'Port')])
+     id: 'userInput', 
+     message: 'Port for application to run',
+     parameters: [
+    [$class: 'TextParameterDefinition', defaultValue: '8000', description: 'Port', name: '']
+        ])
                        }
                        
      stage('Prepare ansible for docker'){
@@ -48,7 +47,7 @@ node{
       become: true,
       colorized: true,
       disableHostKeyChecking: true,
-      extras: ' -e "var1=web-ui.$JV.jar port=${input.Port}"',
+      extras: ' -e "var1=web-ui.$JV.jar port=userInput"',
       playbook: '/opt/ansible/main.yml')
            }
                           
