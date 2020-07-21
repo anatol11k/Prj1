@@ -42,6 +42,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>${project.artifactId}.${BUILD_NUMBER}</finalName>
+		<finalName>${project.artifactId}</finalName>
 	</build>
 </project>
