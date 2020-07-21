@@ -32,7 +32,7 @@ node{
     sh 'cd spring-boot-sample-web-ui/ && mvn clean install '
                                                                                                                          }
   stage('Upload Artifact'){
-      
+      sh 'pwd'
       nexusArtifactUploader artifacts:
           [[artifactId: 'spring-boot-starter-parent',
             classifier: '',
@@ -47,6 +47,7 @@ node{
           version: '2.2.6.RELEASE'
       
       sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
+      
       
        archiveArtifacts(
          artifacts: '*.jar', 
