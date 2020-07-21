@@ -33,7 +33,7 @@ node{
                                                                                                                          }
   stage('Upload Artifact'){
       
-      sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar && curl --fail -u jenkins:jenkins --upload-file web-ui.${BUILD_NUMBER}.jar "http://3.123.21.171:8081/repository/Jenkins/com/GradWork/sample-web-app/1.0.0/web-ui.${BUILD_NUMBER}.jar"'
+      sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
       
        archiveArtifacts(
          artifacts: '*.jar', 
