@@ -10,7 +10,7 @@
     </parent>
     <artifactId>web_ui</artifactId>
 	<name>Spring Boot Web UI Sample</name>
-	<description>Spring Boot Web UI Sample</description>
+	<description>web-ui</description>
 	<properties>
 		<main.basedir>${basedir}/../..</main.basedir>
 	</properties>
