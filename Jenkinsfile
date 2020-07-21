@@ -33,10 +33,11 @@ node{
                                                                                                                          }
   stage('Upload Artifact'){
       sh 'pwd'
+      sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
       nexusArtifactUploader artifacts:
           [[artifactId: 'spring-boot-starter-parent',
             classifier: '',
-            file: 'spring-boot-sample-web-ui/target/web-ui.jar', 
+            file: 'web-ui.${BUILD_NUMBER}.jar', 
             type: 'jar']],
           credentialsId: 'Nexus-Jenkins',
           groupId: 'org.springframework.boot',
@@ -46,7 +47,6 @@ node{
           repository: 'http://3.123.21.171:8081/repository/Jenkins/', 
           version: '2.2.6.RELEASE'
       
-      sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
       
       
        archiveArtifacts(
