@@ -44,7 +44,7 @@ node{
           nexusUrl: '3.123.21.171:8081',
           nexusVersion: 'nexus3',
           protocol: 'http',
-          repository: 'http://3.123.21.171:8081/repository/Jenkins/', 
+          repository: 'Jenkins', 
           version: '2.2.6.RELEASE'
       
       
