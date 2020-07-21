@@ -32,8 +32,8 @@ node{
                             parameters: [
 
                                     string(defaultValue: 'None',
-                                            description: 'Port',
-                                            name: 'Config')])
+                                            description: 'Port for application to run',
+                                            name: 'Port')])
       inputPort = userInput.Port?:''
                        }
                        
