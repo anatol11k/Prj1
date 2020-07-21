@@ -36,7 +36,7 @@ node{
       nexusArtifactUploader artifacts:
           [[artifactId: 'spring-boot-starter-parent',
             classifier: '',
-            file: 'target/web-ui.2.2.6.RELEASE.jar', 
+            file: 'target/web-ui.jar', 
             type: 'jar']],
           credentialsId: 'Nexus-Jenkins',
           groupId: 'org.springframework.boot',
