@@ -31,18 +31,7 @@ node{
   stage('Build Package'){
     sh 'cd spring-boot-sample-web-ui/ && mvn clean install '
                                                                                                                          }
-    
-    stage('Input for port'){
-       def userInput = input(
-       id: 'userInput', message: 'Port for application to run', parameters: [
-       [$class: 'TextParameterDefinition',
-       defaultValue: '8000',
-       description: 'Port',
-       name: ''] ])
-
-       def PORT = userInput
-                       }
-    
+     
   stage('Upload Artifact'){
       sh 'pwd'
       sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
@@ -58,28 +47,37 @@ node{
           protocol: 'http',
           repository: 'Jenkins', 
           version: '2.2.6.RELEASE'
+  }
       
-      
-      
+    stage('Archieve Artifact'){   
+ 
+       def userInput = input(
+       id: 'userInput', message: 'Port for application to run', parameters: [
+       [$class: 'TextParameterDefinition',
+       defaultValue: '8000',
+       description: 'Port',
+       name: ''] ])
+       def PORT = userInput
+        
        archiveArtifacts(
          artifacts: '*.jar', 
          followSymlinks: false,
          fingerprint: true
            )
        build( 
-       job: 'GW_Deploy',
-       parameters:
-       [string(
-       name: 'JV',
-       value: String.valueOf(BUILD_NUMBER),
-       string(
-       name: 'PORT',
-       value: String.valueOf(PORT))
+         job: 'GW_Deploy',
+         parameters:
+         [string(
+         name: 'JV',
+         value: String.valueOf(BUILD_NUMBER),
+         string(
+         name: 'PORT',
+         value: String.valueOf(PORT))
        )]
            )
                                                                                                                            }
 
-
+}
 }
   
   
