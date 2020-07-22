@@ -66,16 +66,14 @@ node{
            )
        build( 
          job: 'GW_Deploy',
-         parameters:
-         [string(
+           parameters: [
+         string(
          name: 'JV',
-         value: String.valueOf(BUILD_NUMBER),
+         value: String.valueOf(BUILD_NUMBER)),
          string(
          name: 'PORT',
          value: PORT)
        )]
            )
-                                                                                                                           }
+  }
 }
-  
-  
