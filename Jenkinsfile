@@ -31,6 +31,18 @@ node{
   stage('Build Package'){
     sh 'cd spring-boot-sample-web-ui/ && mvn clean install '
                                                                                                                          }
+    
+    stage('Input for port'){
+       def userInput = input(
+       id: 'userInput', message: 'Port for application to run', parameters: [
+       [$class: 'TextParameterDefinition',
+       defaultValue: '8000',
+       description: 'Port',
+       name: ''] ])
+
+       def PORT = userInput
+                       }
+    
   stage('Upload Artifact'){
       sh 'pwd'
       sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
@@ -59,9 +71,14 @@ node{
        parameters:
        [string(
        name: 'JV',
-       value: String.valueOf(BUILD_NUMBER))]
+       value: String.valueOf(BUILD_NUMBER),
+       string(
+       name: 'PORT',
+       value: String.valueOf(PORT)
+       )]
            )
                                                                                                                            }
+
 
 }
   
