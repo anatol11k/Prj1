@@ -70,8 +70,9 @@ node{
          [string(
          name: 'JV',
          value: String.valueOf(BUILD_NUMBER),
+         string(
          name: 'PORT',
-         value: String.valueOf(PORT)
+         value: ${PORT})
        )]
            )
                                                                                                                            }
