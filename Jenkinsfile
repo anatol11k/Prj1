@@ -73,7 +73,7 @@ node{
          string(
          name: 'PORT',
          value: PORT)
-       )]
+       ]
            )
   }
 }
