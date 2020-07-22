@@ -26,17 +26,7 @@ node{
        target: '/opt/ansible/roles/deploy/files/')
 }
 
-     stage('Input for port'){
-       def userInput = input(
-       id: 'userInput', message: 'Port for application to run', parameters: [
-       [$class: 'TextParameterDefinition',
-       defaultValue: '8000',
-       description: 'Port',
-       name: '']
-                     ])
-
-       def PORT = userInput
-                       }
+     
                        
      stage('Prepare ansible for docker'){
         sh "cp /opt/ansible/roles/deploy/files/web-ui.$JV.* /opt/ansible/roles/docker/files"
@@ -50,7 +40,7 @@ node{
       become: true,
       colorized: true,
       disableHostKeyChecking: true,
-      extras: ' -e "var1=web-ui.$JV.jar port=${PORT}"',
+      extras: ' -e "var1=web-ui.$JV.jar port=$PORT"',
       playbook: '/opt/ansible/main.yml')
            }
                           
