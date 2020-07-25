@@ -36,8 +36,8 @@ node{
       sh 'pwd'
       sh 'mv spring-boot-sample-web-ui/target/*.jar ./web-ui.${BUILD_NUMBER}.jar'
       nexusArtifactUploader artifacts:
-          [[artifactId: 'spring-boot-starter-parent',
-            classifier: 'web-ui.${BUILD_NUMBER}',
+          [[artifactId: 'web-ui.${BUILD_NUMBER}',
+            classifier: '',
             file: 'web-ui.${BUILD_NUMBER}.jar', 
             type: 'jar']],
           credentialsId: 'Nexus-Jenkins',
