@@ -14,6 +14,9 @@
 	<properties>
 		<main.basedir>${basedir}/../..</main.basedir>
 	</properties>
+	<build>
+        <finalName>web-ui.${BUILD_NUMBER}</finalName>
+  </build>
 	<dependencies>
 		<!-- Compile -->
 		<dependency>
