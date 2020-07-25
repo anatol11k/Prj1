@@ -45,7 +45,8 @@ node{
           nexusUrl: '3.123.21.171:8081',
           nexusVersion: 'nexus3',
           protocol: 'http',
-          repository: 'Jenkins'
+          repository: 'Jenkins',
+          version: '1.0'
             }
       
     stage('Archieve Artifact'){   
