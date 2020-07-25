@@ -46,7 +46,7 @@ node{
           nexusVersion: 'nexus3',
           protocol: 'http',
           repository: 'Jenkins', 
-          version: '2.2.6.RELEASE'
+          version: ''
   }
       
     stage('Archieve Artifact'){   
