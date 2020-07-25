@@ -14,10 +14,8 @@
 	<properties>
 		<main.basedir>${basedir}/../..</main.basedir>
 	</properties>
-	<build>
-        <finalName>web-ui.${BUILD_NUMBER}</finalName>
-  </build>
-	<dependencies>
+	
+		<dependencies>
 		<!-- Compile -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,6 +43,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>${project.artifactId}</finalName>
+		        <finalName>web-ui.${BUILD_NUMBER}</finalName>
+
 	</build>
 </project>
