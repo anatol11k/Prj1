@@ -41,12 +41,12 @@ node{
             file: 'web-ui.${BUILD_NUMBER}.jar', 
             type: 'jar']],
           credentialsId: 'Nexus-Jenkins',
-          groupId: 'gradwork',
+          groupId: 'gradwork.web_ui',
           nexusUrl: '3.123.21.171:8081',
           nexusVersion: 'nexus3',
           protocol: 'http',
           repository: 'Jenkins', 
-          version: ''
+          version: '1.0'
   }
       
     stage('Archieve Artifact'){   
