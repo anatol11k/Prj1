@@ -37,6 +37,7 @@ node{
    stage('Run Asnible for provisioning and deploy'){
     ansiblePlaybook(
       inventory: '/opt/ansible/ec2.py',
+      vaultCredentialsId: 'AnsibleVault'
       become: true,
       colorized: true,
       disableHostKeyChecking: true,
