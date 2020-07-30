@@ -57,7 +57,7 @@ pipeline {
         stage("Run task in cluster as task") {
             steps {
                 echo "======= Run task in cluster as task ======="
-                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK}:${REV} --launch-type EC2 --count 1"
+                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK}:${REV} --launch-type FARGATE --count 1 "
             }
         }
         
