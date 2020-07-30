@@ -57,7 +57,7 @@ pipeline {
         stage("Run task in cluster as task") {
             steps {
                 echo "======= Run task in cluster as task ======="
-                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK}:${REV} --launch-type FARGATE --count 1 --network-configuration "awsvpcConfiguration={subnets=[subnet-07b01565e67dc88a3],securityGroups=[sg-087e466cbcacffd2a]}""
+                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK}:${REV} --launch-type FARGATE --count 1 --network-configuration 'awsvpcConfiguration={subnets=[subnet-07b01565e67dc88a3],securityGroups=[sg-087e466cbcacffd2a]}'"
             }
         }
         
