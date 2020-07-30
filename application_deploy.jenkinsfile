@@ -46,6 +46,7 @@ node{
            }
                           
     stage('Clean all'){
+    sh '/app/docker_tag.sh > /app/docker_tags'
     sh 'rm -rf /opt/ansible/roles/deploy/files/web-ui.$JV.* && rm -rf /opt/ansible/roles/docker/files/*.jar'
     }
  
