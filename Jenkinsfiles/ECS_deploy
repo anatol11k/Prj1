@@ -5,7 +5,8 @@ properties([
     parameters([
     	string(defaultValue: '0', description: 'Enter port number from image tag', name: 'PORT', trim: false),
         string(defaultValue: 'gw', description: 'Enter Name for task definition with next revision', name: 'NTASK', trim: false),
-	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false)
+	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false),
+	string(defaultValue: 'none', description: 'Enter next revision for new task', name: 'REV', trim: false)   
     ]
 ])
 
@@ -24,6 +25,7 @@ pipeline {
                 sh "/usr/local/aws-cli/v2/current/dist/aws ecr describe-repositories | jq .repositories[0].repositoryName"
                 echo "${params.PORT}"
                 echo "${params.IMAGE}"
+		    echo "${params.REV}"
 			
              }
         }
@@ -56,7 +58,7 @@ pipeline {
         stage("Run task in cluster as task") {
             steps {
                 echo "======= Run task in cluster as task ======="
-                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK} --launch-type EC2 --count 1"
+                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK}:${REV} --launch-type EC2 --count 1"
             }
         }
         
