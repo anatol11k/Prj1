@@ -5,8 +5,8 @@ properties([
     parameters([
     	string(defaultValue: '0', description: 'Enter port number from image tag', name: 'PORT', trim: false),
         string(defaultValue: 'gw', description: 'Enter Name for task definition', name: 'NTASK', trim: false),
-	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false)
-	string(defaultValue: 'none', description: 'Enter next revision', name: 'REV', trim: false),
+	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false),
+	string(defaultValue: 'none', description: 'Enter next revision for task', name: 'REV', trim: false)
     ]
 ])
 
