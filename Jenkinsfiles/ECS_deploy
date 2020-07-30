@@ -44,12 +44,12 @@ pipeline {
         
         stage("Create task definition") {
             steps {
-                echo "======= create task definition======="
-                dir (ECS_template) {
+                dir ('ECS_template') {
 	            sh "pwd"
                     sh "aws ecs register-task-definition --cli-input-json file://template.json"
+	            sh "aws ecs list-task-definitions"
                 }
-                sh "aws ecs list-task-definitions"
+                
             }
         }
         
