@@ -52,7 +52,7 @@ node{
     stage('Archieve Artifact'){   
  
        def userInput = input(
-       id: 'userInput', message: 'Port for application to run', parameters: [
+       id: 'userInput', message: 'Port for application to run in range from 8000-15000', parameters: [
        [$class: 'TextParameterDefinition',
        defaultValue: '8000',
        description: 'Port',
