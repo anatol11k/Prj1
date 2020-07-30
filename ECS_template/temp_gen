@@ -19,7 +19,7 @@ echo '    ],'
 echo ''
 
 echo '    "requiresCompatibilities": ['
-echo '        "EC2"'
+echo '        "FARGATE"'
 echo '    ],'
 echo '    "tags": ['
 echo '        {'
