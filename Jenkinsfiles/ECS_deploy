@@ -10,11 +10,7 @@ properties([
 ])
 
 pipeline {
-    
-    environment {
-        RNAME = "${sh(script:'aws ecr describe-repositories | jq .repositories[0].repositoryName', returnStdout: true).trim()}"
-    }
-    
+       
     agent {
         label 'master'
     }
@@ -35,7 +31,6 @@ pipeline {
                 
         stage("Create template for task definition") {
             steps {
-                echo "Repository Name is ${env.RNAME}"
                 script {
                     dir ('ECS_template') {
 					    sh "chmod +x temp_gen"
@@ -51,6 +46,7 @@ pipeline {
             steps {
                 echo "======= create task definition======="
                 dir (ECS_template) {
+	            sh "pwd"
                     sh "aws ecs register-task-definition --cli-input-json file://template.json"
                 }
                 sh "aws ecs list-task-definitions"
