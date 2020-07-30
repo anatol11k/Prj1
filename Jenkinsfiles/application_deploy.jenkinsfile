@@ -45,9 +45,9 @@ node{
       playbook: '/opt/ansible/main.yml')
            }
                           
-    stage('Clean all'){
-    sh '/app/docker_tag.sh > /app/docker_tags'
-    sh 'rm -rf /opt/ansible/roles/deploy/files/web-ui.$JV.* && rm -rf /opt/ansible/roles/docker/files/*.jar'
+    stage('Clean ansible directories and update list of images from Dockerhub'){
+    sh '/app/docker_tag.sh > /app/docker_tags' ===
+    sh 'rm -rf /opt/ansible/roles/deploy/files/*.jar && rm -rf /opt/ansible/roles/docker/files/*.jar'
     }
  
 }
