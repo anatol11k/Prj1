@@ -1,0 +1,17 @@
+---
+# tasks file for deploy_old_ver
+
+- name: Creates directory for project
+  file:
+    path: /project/old_version
+    state: directory
+    owner: devops
+    mode: 0755
+
+
+- name: Download old version
+  shell: 'cd /project/old_version && rm -rf *.jar && wget --user={{ nexus_login }} --password={{ nexus_pass  }} "{{ old_ver }}" '
+
+- name: Run app
+  shell: "nohup java -jar /project/old_version/*.jar --server.port={{ port }} &"
+

@@ -1,0 +1,70 @@
+
+---
+# tasks file for docker_test     
+ - name: Create Dockerfile
+   local_action:
+           module: template
+            src=Dockerfile.j2
+            dest=/opt/ansible/roles/docker/files/Dockerfile
+            mode=0555
+
+            # - name: Removing exited containers
+            #local_action:
+            # shell: "docker ps -a -q -f status=exited | xargs --no-run-if-empty docker rm --volumes"
+
+            #- name: Removing untagged images
+            #local_action:
+            #shell: "docker images | awk '/^<none>/ { print $3 }' | xargs --no-run-if-empty docker rmi -f"
+
+ - name: Install docker-py
+   shell: "yum -y install python36 &&  pip3 install docker-py && systemctl start docker"
+
+ - name: Log into docker registry and force re-authorization 
+   shell: "docker login -u {{ docker_login }} -p {{ docker_pass }}"
+             
+ - name: Create Image
+   local_action:
+           module: docker_image
+           build:
+            path: /opt/ansible/roles/docker/files
+           state: present
+           tag:  "{{ ansible_art }}"
+           name: "{{ docker_repo }}"
+           source: build
+
+ - name: Add port for app to tag
+   local_action: shell docker tag {{ docker_login }}/ep_devops:{{ ansible_art }} {{ docker_login }}/ep_devops:{{ ansible_art }}-{{ port }}
+
+ - name: Push image to DockerHub
+   local_action: shell docker push {{ docker_login }}/ep_devops:{{ ansible_art }}-{{ port }}
+
+ - name: Tag image for ECR
+   local_action: shell docker tag {{ docker_login }}/ep_devops:{{ ansible_art }}-{{ port }} 989620592373.dkr.ecr.eu-central-1.amazonaws.com/gradwork:{{ ansible_art }}-{{ port }}
+   ignore_errors: true
+   
+ 
+ - name: Push image to ECR
+   local_action:  shell docker push 989620592373.dkr.ecr.eu-central-1.amazonaws.com/gradwork:{{ ansible_art }}-{{ port }}
+   ignore_errors: true
+
+ - name: Delete old images
+   shell: "docker rmi -f $(docker images -a -q)"
+   register: no images
+   ignore_errors: true
+   
+
+ - name: Pull an image
+   shell: "docker pull anatol11k/ep_devops:{{ ansible_art }}-{{ port }}"
+
+ - name: Stop all running containers
+   shell: "docker stop $(docker ps -aq)"  
+   register: no containers
+   ignore_errors: true
+
+ - name: Run new container with app
+   shell: "docker run -d -p {{ port }}:{{ port }} anatol11k/ep_devops:{{ ansible_art }}-{{ port }}"
+
+ - name: clean all images from Jenkins
+   local_action: shell docker rmi -f $(docker images -a -q)
+   register: many images
+   ignore_errors: true

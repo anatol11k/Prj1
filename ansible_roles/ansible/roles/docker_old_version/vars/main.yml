@@ -1,0 +1,5 @@
+---
+# vars file for docker_old_version
+ansible_art: "{{ var1 }}"
+port: "{{ port }}"
+

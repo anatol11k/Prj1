@@ -1,0 +1,6 @@
+FROM java:8-jdk-alpine
+COPY {{ ansible_art }}  /usr/app/
+WORKDIR /usr/app/
+EXPOSE {{ port }}
+CMD ["java", "-jar", "{{ ansible_art }}", "--server.port={{ port }}"]
+

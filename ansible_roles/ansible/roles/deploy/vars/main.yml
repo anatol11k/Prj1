@@ -1,0 +1,8 @@
+
+---
+# vars file for deploy
+ansible_art: "{{ var1 }}"
+dest: /project
+files: /opt/ansible/roles/deploy/files/
+port: "{{ port }}"
+

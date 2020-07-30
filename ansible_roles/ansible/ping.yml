@@ -1,0 +1,7 @@
+
+---
+- name: awda
+  hosts: tag_Name_CI:tag_Name_QA:tag_Name_Docker
+  become: yes
+  tasks:
+   - ping:

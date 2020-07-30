@@ -1,0 +1,36 @@
+properties([
+ parameters([
+  [$class:
+ 'ExtensibleChoiceParameterDefinition',
+  choiceListProvider: [$class: 'Nexus3ChoiceListProvider',
+  artifactId: '',
+  classifier: '',
+  credentialsId: 'Nexus-Jenkins',
+  groupId: 'gradwork.web_ui',
+  packaging: 'jar',
+  repositoryId: 'Jenkins',
+  url: 'http://3.123.21.171:8081'],
+  description: '',
+  editable: false,
+  name: 'artifact']])])
+  
+node {
+      stage("Deploy to QA"){
+       def userInput = input(
+       id: 'userInput', message: 'Port for application to run in range 8000-15000', parameters: [
+       [$class: 'TextParameterDefinition',
+       defaultValue: '8000',
+       description: 'Port',
+       name: ''] ])
+       
+       def PORT = userInput
+       def ART = params.artifact
+       
+       echo "$PORT"
+       echo "$ART"
+     
+     sh "ansible-playbook /opt/ansible/deploy_old_ver.yml -i /opt/ansible/ec2.py -b --become-user root -e 'var1=$ART port=$PORT' --vault-password-file ~/secrets/ansible/ps.txt"
+     echo "Application started on QA with version $ART on port $PORT"
+      }
+  }
+

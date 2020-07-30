@@ -1,0 +1,8 @@
+---
+# tasks file for docker_old_version
+ - name: Pull an image
+   shell: "docker pull {{ ansible_art }}"
+
+ - name: Run new container with app
+   shell: "docker run -d -p {{ port }}:{{ port }} {{ ansible_art }}"
+

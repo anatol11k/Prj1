@@ -1,0 +1,39 @@
+properties([
+ parameters([
+  [$class:
+   'ExtensibleChoiceParameterDefinition',
+   choiceListProvider:[$class: 'SystemGroovyChoiceListProvider',
+   groovyScript: [classpath: [],
+   sandbox: true,
+   script: '''def words = []
+    new File( \'/app/docker_tags\' ).eachLine { line ->
+    words << line
+    }
+    words.each {
+    println it
+    }'''], 
+   usePredefinedVariables: false],
+   description: '',
+   editable: false,
+   name: 'image']])])
+
+
+node {
+    stage('chooseDockerTags') {
+       def userInput = input(
+       id: 'userInput', message: 'Port for application to run from image tag', parameters: [
+       [$class: 'TextParameterDefinition',
+       defaultValue: '8000',
+       description: 'Port',
+       name: ''] ])
+       
+       def PORT = userInput
+       def IMAGE = params.image
+       
+	echo "$PORT"
+       	echo "$IMAGE"
+       
+       sh "ansible-playbook /opt/ansible/deploy_old_image.yml -i /opt/ansible/ec2.py -b --become-user root -e 'var1=$IMAGE port=$PORT'"
+       echo "Application started from image $IMAGE on port $PORT"
+}
+}

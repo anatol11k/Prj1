@@ -1,0 +1,6 @@
+---
+- name: Deploy old image to Docker instance
+  hosts: tag_Name_Docker
+  roles:
+   - docker_old_version
+

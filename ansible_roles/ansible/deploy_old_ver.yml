@@ -1,0 +1,6 @@
+
+---
+- name: Provision and deploy
+  hosts: tag_Name_QA
+  roles:
+   - deploy_old_ver

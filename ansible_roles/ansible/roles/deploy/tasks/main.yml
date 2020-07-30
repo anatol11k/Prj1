@@ -1,0 +1,25 @@
+---
+# tasks file for deploy
+- name: Copy artifact to remote hosts
+  copy:
+          src={{ files }}/{{ ansible_art }}
+          dest={{ dest }}
+          mode=0755
+
+- name: Kill all old java applications
+  shell: pkill java
+  ignore_errors: true
+
+- name: Run app
+  shell: "nohup java -jar /project/{{ ansible_art }} --server.port={{ port }} &"  
+  register: jstatus
+
+- debug:
+    var: jstatus
+
+- name: Check app process
+  shell: "ps -aux | grep java"
+  register: process
+
+- debug:
+    var: process.stdout_lines  

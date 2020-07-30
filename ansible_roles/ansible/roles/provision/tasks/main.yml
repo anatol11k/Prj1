@@ -1,0 +1,61 @@
+
+---
+# tasks file for provision
+
+- name: update the system
+  yum:
+    name: '*'
+    state: latest
+    exclude: docker*
+
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+
+- name: Create a login user
+  user:
+      name: devops
+      groups: wheel
+      append: yes
+      state: present
+      shell: /bin/bash
+      system: no
+      createhome: yes
+      home: /home/devops
+
+
+- name: Creates directory for project
+  file:
+    path: /project
+    state: directory
+    owner: devops
+    mode: 0755
+
+- name: Docker repo
+  get_url:
+   url: https://download.docker.com/linux/centos/docker-ce.repo
+   dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Docker
+  shell: yum install -y --nobest docker-ce
+
+
+- name: Install necessary software
+  yum:
+   name: '{{ item }}'
+  loop:
+     - yum-utils
+     - java-1.8.0-openjdk
+     - wget
+- name: check Java version
+  shell: java -version
+  register: ver
+
+- debug:
+   var: ver.stderr_lines

@@ -1,0 +1,16 @@
+
+---
+- name: Provisioning
+  hosts: tag_Name_CI:tag_Name_QA:tag_Name_Docker
+  roles:
+   - provision
+
+- name: Deploy
+  hosts: tag_Name_CI:tag_Name_QA
+  roles:
+   - deploy
+
+- name: Docker deploy
+  hosts: tag_Name_Docker
+  roles:
+   - docker

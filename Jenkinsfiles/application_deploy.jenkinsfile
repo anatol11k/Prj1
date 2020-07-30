@@ -1,0 +1,53 @@
+properties([
+    [
+            $class  : 'BuildDiscarderProperty',
+            strategy: [$class               : 'LogRotator',
+                       artifactDaysToKeepStr: '14',
+                       artifactNumToKeepStr : '5',
+                       daysToKeepStr        : '',
+                       numToKeepStr         : '10'
+                       ]
+    ], disableConcurrentBuilds()
+    ])
+
+node{
+
+     stage("Clean"){
+        sh "uptime"
+        deleteDir()
+                    }     
+    
+     stage('Copy Artifact'){
+       copyArtifacts(
+       filter: '*.jar',
+       fingerprintArtifacts: true,
+       projectName: 'GW_Build',
+       selector: upstream(),
+       target: '/opt/ansible/roles/deploy/files/')
+}
+
+     
+                       
+     stage('Prepare ansible for docker'){
+        sh "cp /opt/ansible/roles/deploy/files/web-ui.$JV.* /opt/ansible/roles/docker/files"
+     }         
+                    
+             
+                     
+   stage('Run Asnible for provisioning and deploy'){
+    ansiblePlaybook(
+      inventory: '/opt/ansible/ec2.py',
+      vaultCredentialsId: 'AnsibleVault',
+      become: true,
+      colorized: true,
+      disableHostKeyChecking: true,
+      extras: ' -e "var1=web-ui.$JV.jar port=$PORT"',
+      playbook: '/opt/ansible/main.yml')
+           }
+                          
+    stage('Clean all'){
+    sh '/app/docker_tag.sh > /app/docker_tags'
+    sh 'rm -rf /opt/ansible/roles/deploy/files/web-ui.$JV.* && rm -rf /opt/ansible/roles/docker/files/*.jar'
+    }
+ 
+}
