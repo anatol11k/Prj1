@@ -1,8 +1,8 @@
 #!/bin/bash
 echo '{'
 echo '    "family": "'$1'",'
-echo '    "cpu": "256"
-echo '    "memory": "512"
+echo '    "cpu": "256",'
+echo '    "memory": "512",'
 echo '    "networkMode": "awsvpc",'
 echo '    "containerDefinitions": ['
 echo '        {'
