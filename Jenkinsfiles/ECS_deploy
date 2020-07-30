@@ -21,7 +21,7 @@ pipeline {
     stages {
         stage("define vars") {
             steps {
-              
+                sh "/usr/local/aws-cli/v2/current/dist/aws ecr describe-repositories | jq .repositories[0].repositoryName"
                 echo "${params.PORT}"
                 echo "${params.IMAGE}"
 				
@@ -46,8 +46,8 @@ pipeline {
             steps {
                 dir ('ECS_template') {
 	            sh "pwd"
-                    sh "aws ecs register-task-definition --cli-input-json file://template.json"
-	            sh "aws ecs list-task-definitions"
+                    sh "/usr/local/aws-cli/v2/current/dist/aws ecs register-task-definition --cli-input-json file://template.json"
+	            sh "/usr/local/aws-cli/v2/current/dist/aws ecs list-task-definitions"
                 }
                 
             }
@@ -56,7 +56,7 @@ pipeline {
         stage("Run task in cluster as task") {
             steps {
                 echo "======= Run task in cluster as task ======="
-                sh "aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK} --launch-type EC2 --count 1"
+                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK} --launch-type EC2 --count 1"
             }
         }
         
