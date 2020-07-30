@@ -1,5 +1,4 @@
 #!groovy
-//building docker image
 properties([
     disableConcurrentBuilds(),
     parameters([
@@ -7,7 +6,7 @@ properties([
         string(defaultValue: 'gw', description: 'Enter Name for task definition with next revision', name: 'NTASK', trim: false),
 	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false),
 	string(defaultValue: 'none', description: 'Enter next revision for new task', name: 'REV', trim: false)   
-    ]
+    ])
 ])
 
 pipeline {
