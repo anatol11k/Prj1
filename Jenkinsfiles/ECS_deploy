@@ -1,20 +1,15 @@
 #!groovy
-//building docker image
 properties([
     disableConcurrentBuilds(),
     parameters([
     	string(defaultValue: '0', description: 'Enter port number from image tag', name: 'PORT', trim: false),
-        string(defaultValue: 'gw', description: 'Enter Name for task definition', name: 'NTASK', trim: false),
-		string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false),
+        string(defaultValue: 'gw', description: 'Enter Name for task definition with next revision', name: 'NTASK', trim: false),
+	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false),
     ])
 ])
 
 pipeline {
-    
-    environment {
-        RNAME = "${sh(script:'aws ecr describe-repositories | jq .repositories[0].repositoryName', returnStdout: true).trim()}"
-    }
-    
+       
     agent {
         label 'master'
     }
@@ -25,7 +20,7 @@ pipeline {
     stages {
         stage("define vars") {
             steps {
-              
+                sh "/usr/local/aws-cli/v2/current/dist/aws ecr describe-repositories | jq .repositories[0].repositoryName"
                 echo "${params.PORT}"
                 echo "${params.IMAGE}"
 				
@@ -35,35 +30,29 @@ pipeline {
                 
         stage("Create template for task definition") {
             steps {
-                echo "Repository Name is ${env.RNAME}"
                 script {
                     dir ('ECS_template') {
-					    sh "chmod +x temp_gen"
-                        sh "./temp_gen ${params.NTASK} ${params.IMAGE} ${params.PORT} > template.json"
+					    sh "chmod +x cf_app_ecs"
+                        sh "./cf_app_ecs ${params.IMAGE}  ${params.PORT} ${params.NTASK}  > APPECS.yml"
                         sh "ls -la"
-                        sh "cat template.json"
+                        sh "cat APPECS.yml"
                     }
                 }
             }
         }
         
-        stage("Create task definition") {
+        stage("Delete old task and create stack with new task") {
             steps {
-                echo "======= create task definition======="
-                dir (ECS_template) {
-                    sh "aws ecs register-task-definition --cli-input-json file://template.json"
+                dir ('ECS_template') {
+	            sh "pwd"
+	            sh "/usr/local/aws-cli/v2/current/dist/aws cloudformation delete-stack --stack-name APP-ECS"
+		    sh "sleep 15"
+                    sh "/usr/local/aws-cli/v2/current/dist/aws cloudformation create-stack --template-body file://APPECS.yml"
+	            
                 }
-                sh "aws ecs list-task-definitions"
+                
             }
         }
-        
-        stage("Run task in cluster as task") {
-            steps {
-                echo "======= Run task in cluster as task ======="
-                sh "aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK} --launch-type EC2 --count 1"
-            }
-        }
-        
-        
+         
     }
 }
