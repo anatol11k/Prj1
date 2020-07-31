@@ -1,0 +1,187 @@
+ 
+Parameters:
+  Environment:
+    Type: String
+    Default: "CF_test"
+
+  VPCBlock:
+    Type: String
+    Default: '10.0.0.0/16'
+  
+  
+  PublicSubnetCIDR: 
+    Type: String
+    Default: '10.0.10.0/24'
+    Description: "Public Subnet-A CIDR"
+   
+ 
+
+
+Resources:
+#============= VPC ==================
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:                              # Attach Primary CIDR Block
+      CidrBlock: !Ref VPCBlock             
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref Environment
+            
+#=============IGW====================
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+ 
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+          
+#============ Subnet ======================================================	  
+  PublicSubnet:
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, "Fn::GetAZs": { Ref: "AWS::Region" } ]
+      CidrBlock: !Ref "PublicSubnetCIDR"
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Join [ "", [ !Ref Environment, "-Public" ] ]
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
+ 
+#=============EC2s=============================================================
+  EC2CI:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.micro
+      KeyName: EPAM
+      ImageId: ami-07dfba995513840b5
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum -y update
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+            sudo rpm -ql epel-release
+            sudo dnf repolist -v                    
+      Tags:
+       - Key: Name
+         Value: CI
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+            - !GetAtt "InstanceSecurityGroup.GroupId"
+            
+  EC2QA:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.micro
+      KeyName: EPAM
+      ImageId: ami-07dfba995513840b5
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum -y update
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+            sudo rpm -ql epel-release
+            sudo dnf repolist -v
+      Tags:
+       - Key: Name
+         Value: QA
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+            - !GetAtt "InstanceSecurityGroup.GroupId"
+  
+  EC2Docker:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.micro
+      KeyName: EPAM
+      ImageId: ami-07dfba995513840b5
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum -y update
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+            sudo rpm -ql epel-release
+            sudo dnf repolist -v
+      Tags:
+       - Key: Name
+         Value: Docker
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+            - !GetAtt "InstanceSecurityGroup.GroupId"
+  
+  EC2DevTools:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.medium
+      KeyName: EPAM
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum install -y java-1.8.0-openjdk yum-utils maven git wget vim python3 >> /home/ec2-user/install_log
+            sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins.io/redhat-stable/jenkins.repo >> /home/ec2-user/install_log
+            sudo rpm --import http://pkg.jenkins.io/redhat-stable/jenkins.io.key >> /home/ec2-user/install_log
+            sudo python3 -V >> /home/ec2-user/python_version 
+            sudo mkdir /opt/ansible >> /home/ec2-user/install_log
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y >> /home/ec2-user/install_log
+            sudo rpm -ql epel-release >> /home/ec2-user/install_log
+            sudo dnf repolist -v >> /home/ec2-user/install_log
+            sudo yum -y update >> /home/ec2-user/install_log
+            sudo yum -y install jenkins ansible >> /home/ec2-user/install_log
+
+      ImageId: ami-07dfba995513840b5
+      Tags:
+       - Key: Name
+         Value: DevTools
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+            - !GetAtt "InstanceSecurityGroup.GroupId"
+
+      
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '9090'
+        ToPort: '9090'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '8000'
+        ToPort: '8000'
+        CidrIp: 0.0.0.0/0        
+      VpcId: !Ref VPC 
+
+

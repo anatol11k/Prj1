@@ -1,0 +1,64 @@
+Resources:
+
+  EC2CI:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.micro
+      KeyName: EPAM
+      ImageId: ami-07dfba995513840b5
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum -y update
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+            sudo rpm -ql epel-release
+            sudo dnf repolist -v                    
+      Tags:
+       - Key: Name
+         Value: CI
+      SubnetId: subnet-0519652e13aa6749c
+      SecurityGroupIds:
+            - sg-0fd8286783e7ac258
+            
+  EC2QA:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.micro
+      KeyName: EPAM
+      ImageId: ami-07dfba995513840b5
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum -y update
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+            sudo rpm -ql epel-release
+            sudo dnf repolist -v
+      Tags:
+       - Key: Name
+         Value: QA
+      SubnetId: subnet-0519652e13aa6749c
+      SecurityGroupIds:
+            - sg-0fd8286783e7ac258
+  
+  EC2Docker:
+   Type: AWS::EC2::Instance
+   Properties:
+      InstanceType: t2.micro
+      KeyName: EPAM
+      ImageId: ami-07dfba995513840b5
+      UserData:
+       'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            sudo yum -y update
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+            sudo rpm -ql epel-release
+            sudo dnf repolist -v
+      Tags:
+       - Key: Name
+         Value: Docker
+      SubnetId: subnet-0519652e13aa6749c
+      SecurityGroupIds:
+            - sg-0fd8286783e7ac258
