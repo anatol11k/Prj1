@@ -46,7 +46,7 @@ pipeline {
                 dir ('ECS_template') {
 	            sh "pwd"
 	            sh "/usr/local/aws-cli/v2/current/dist/aws cloudformation delete-stack --stack-name APP-ECS"
-		    sh "sleep 45"
+		    sh "sleep 120"
                     sh "/usr/local/aws-cli/v2/current/dist/aws cloudformation create-stack --template-body file://APPECS.yml --stack-name APP-ECS"
 	            
                 }
