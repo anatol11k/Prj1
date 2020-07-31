@@ -81,13 +81,12 @@ echo 'Outputs:'
 echo ''
 echo '  ApiEndpoint:'
 echo '    Description: web-ui-gw API Endpoint'
-echo '    Value: !Join ['', ['http://', !ImportValue DomainName, '/']]'
+echo "    Value: !Join ['', ['http://', !ImportValue DomainName, '/']]"
 echo '    Export:'
-echo '      Name: 'web-ui-gwEndpoint''
+echo "      Name: 'web-ui-gwEndpoint'"
 echo ''
 echo '  TargetGroup:'
 echo '    Description: TargetGroup for future tasks'
 echo '    Value: !Ref TargetGroup'
 echo '    Export:'
-echo '       Name: "TargetGroup"'
-
+echo "       Name: 'TargetGroup'"
