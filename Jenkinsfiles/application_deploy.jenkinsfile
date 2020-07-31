@@ -48,6 +48,7 @@ node{
     stage('Clean ansible directories and update list of images from Dockerhub'){
     sh '/app/docker_tag.sh > /app/docker_tags' 
     sh 'rm -rf /opt/ansible/roles/deploy/files/*.jar && rm -rf /opt/ansible/roles/docker/files/*.jar'
+    echo "Application web-ui.$JV started on port $PORT on CI env"
     }
  
 }
