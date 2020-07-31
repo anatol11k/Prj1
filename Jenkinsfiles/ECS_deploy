@@ -5,7 +5,6 @@ properties([
     	string(defaultValue: '0', description: 'Enter port number from image tag', name: 'PORT', trim: false),
         string(defaultValue: 'gw', description: 'Enter Name for task definition with next revision', name: 'NTASK', trim: false),
 	string(defaultValue: 'none', description: 'Enter image URI from ECR', name: 'IMAGE', trim: false),
-	string(defaultValue: 'none', description: 'Enter next revision for new task', name: 'REV', trim: false)   
     ])
 ])
 
@@ -24,8 +23,7 @@ pipeline {
                 sh "/usr/local/aws-cli/v2/current/dist/aws ecr describe-repositories | jq .repositories[0].repositoryName"
                 echo "${params.PORT}"
                 echo "${params.IMAGE}"
-		    echo "${params.REV}"
-			
+				
              }
         }
         
@@ -34,33 +32,27 @@ pipeline {
             steps {
                 script {
                     dir ('ECS_template') {
-					    sh "chmod +x temp_gen"
-                        sh "./temp_gen ${params.NTASK} ${params.IMAGE} ${params.PORT} > template.json"
+					    sh "chmod +x cf_app_ecs"
+                        sh "./cf_app_ecs ${params.IMAGE}  ${params.PORT} ${params.NTASK}  > APPECS.yml"
                         sh "ls -la"
-                        sh "cat template.json"
+                        sh "cat APPECS.yml"
                     }
                 }
             }
         }
         
-        stage("Create task definition") {
+        stage("Delete old task and create stack with new task") {
             steps {
                 dir ('ECS_template') {
 	            sh "pwd"
-                    sh "/usr/local/aws-cli/v2/current/dist/aws ecs register-task-definition --cli-input-json file://template.json"
-	            sh "/usr/local/aws-cli/v2/current/dist/aws ecs list-task-definitions"
+	            sh "/usr/local/aws-cli/v2/current/dist/aws cloudformation delete-stack --stack-name APP-ECS"
+		    sh "sleep 15"
+                    sh "/usr/local/aws-cli/v2/current/dist/aws cloudformation create-stack --template-body file://APPECS.yml"
+	            
                 }
                 
             }
         }
-        
-        stage("Run task in cluster as task") {
-            steps {
-                echo "======= Run task in cluster as task ======="
-                sh "/usr/local/aws-cli/v2/current/dist/aws ecs run-task --cluster Graduation_work --task-definition ${params.NTASK}:${REV} --launch-type FARGATE --count 1 --network-configuration 'awsvpcConfiguration={subnets=[subnet-07b01565e67dc88a3],securityGroups=[sg-087e466cbcacffd2a]}'"
-            }
-        }
-        
-        
+         
     }
 }
